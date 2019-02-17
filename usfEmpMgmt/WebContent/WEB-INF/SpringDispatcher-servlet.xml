@@ -1,0 +1,54 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:mvc="http://www.springframework.org/schema/mvc"
+xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:context="http://www.springframework.org/schema/context"
+xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+                    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd     
+                    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+   
+   
+   <context:component-scan base-package = "com.usfEmpMgmt" />
+   <mvc:annotation-driven/>
+   
+
+   <bean class = "org.springframework.web.servlet.view.InternalResourceViewResolver">
+      <property name = "prefix" value = "/WEB-INF/jsp/" />
+      <property name = "suffix" value = ".jsp" />
+   </bean>
+   
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
+	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />  
+<!-- 	<property name="url" value="jdbc:oracle:thin:@localhost:1521/orclpdb" />   -->
+	<property name="url" value="jdbc:oracle:thin:@reade.forest.usf.edu:1521:cdb9" />
+	<property name="username" value="DB620" />  
+	<property name="password" value="Tree@2015" />  
+	</bean>  
+	
+	
+	<bean id="jdbcTemp" class="org.springframework.jdbc.core.JdbcTemplate">
+	<property name="dataSource" ref="dataSource" />	
+	</bean>
+	
+	<!--   new bean added -->
+  
+
+
+ <bean id="namedParameterJdbcTemp" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+      <constructor-arg ref="dataSource"/>
+   </bean>
+
+	<bean id = "dashJDBCTemp" 
+      class = "com.usfEmpMgmt.DashJDBCTemp">
+      <property name="jdbcTemplate" ref="jdbcTemp" />
+      
+      <property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemp" />
+   	</bean>
+   	
+
+
+
+ 
+
+</beans>
